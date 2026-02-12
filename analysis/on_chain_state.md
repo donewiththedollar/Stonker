@@ -71,30 +71,62 @@ This is the core market-making function `stonker::aaf6cc9d45ba0185f` -- a full m
 
 | Arg | Type | Object | DEX |
 |-----|------|--------|-----|
-| 0 | `stonker::State` (mut) | `0x6578...` | Stonker |
-| 1 | `config::Config` (ref) | `0x692f...` | Stonker |
+| 0 | `stonker::Aeddd137dc4eebbc7` (mut) | `0x65785aa18840e163964780b691318627b1b0dde2af52654fb28e88f7581d1e2e` | Stonker |
+| 1 | `a783956f993d811bc::A0ea878587b719a64` (ref) | `0x692f8e28827bba47f59e84cb37924fef805c419850fe8d2508d4f8c9914e2afe` | Stonker |
 | 2 | `Coin<SUI>` (mut) | GasCoin | -- |
-| 3 | `BalanceManager` (mut) | `0x705a...` | Deepbook |
-| 4 | `Pool<SUI,USDC>` (mut) | `0xe05d...` | Deepbook |
-| 5 | `Pool<DEEP,USDC>` (mut) | `0xf948...` | Deepbook |
-| 6 | `Pool<SUI,USDC>` (mut) | `0x455c...` | MMT |
-| 7 | `Version` (ref) | `0x2375...` | MMT |
-| 8 | `Pool<USDC,SUI>` (mut) | `0x51e8...` | Cetus A |
-| 9 | `Pool<USDC,SUI>` (mut) | `0xb8d7...` | Cetus B |
-| 10 | `GlobalConfig` (ref) | `0xdaa4...` | Cetus |
-| 11 | `RewarderGlobalVault` (mut) | `0xce7b...` | Cetus |
-| 12 | `Pool<SUI,USDC,FEE500BPS>` (mut) | `0x0df4...` | Turbos |
-| 13 | `Versioned` (ref) | `0xf1cf...` | Turbos |
-| 14 | `Pool<SUI,USDC>` (mut) | `0x15db...` | Bluefin |
-| 15 | `GlobalConfig` (ref) | `0x03db...` | Bluefin |
-| 16 | `Clock` (ref) | `0x6` | Sui |
-| 17-21 | `u64, u64, u8, u64, u64` | Pure values | -- |
+| 3 | `balance_manager::BalanceManager` (mut) | `0x705ac1ce9eafab73b885051e458c5b4d8480f44f709abf4cc297df1d20ec6581` | Deepbook |
+| 4 | `Pool<SUI, USDC>` (mut) | `0xe05dafb5133bcffb8d59f4e12465dc0e9faeaa05e3e342a08fe135800e3e4407` | Deepbook |
+| 5 | `Pool<DEEP, USDC>` (mut) | `0xf948981b806057580f91622417534f491da5f61aeaf33d0ed8e69fd5691c95ce` | Deepbook |
+| 6 | `Pool<SUI, USDC>` (mut) | `0x455cf8d2ac91e7cb883f515874af750ed3cd18195c970b7a2d46235ac2b0c388` | MMT |
+| 7 | `Version` (ref) | `0x2375a0b1ec12010aaea3b2545acfa2ad34cfbba03ce4b59f4c39e1e25eed1b2a` | MMT |
+| 8 | `Pool<USDC, SUI>` (mut) | `0x51e883ba7c0b566a26cbc8a94cd33eb0abd418a77cc1e60ad22fd9b1f29cd2ab` | Cetus A |
+| 9 | `Pool<USDC, SUI>` (mut) | `0xb8d7d9e66a60c239e7a60110efcf8de6c705580ed924d0dde141f4a0e2c90105` | Cetus B |
+| 10 | `GlobalConfig` (ref) | `0xdaa46292632c3c4d8f31f23ea0f9b36a28ff3677e9684980e4438403a67a3d8f` | Cetus |
+| 11 | `RewarderGlobalVault` (mut) | `0xce7bceef26d3ad1f6d9b6f13a953f053e6ed3ca77907516481ce99ae8e588f2b` | Cetus |
+| 12 | `Pool<SUI, USDC, FEE500BPS>` (mut) | `0x0df4f02d0e210169cbe21d79906d70dcc5df3e21389fe23d22699b67defd6919` | Turbos |
+| 13 | `Versioned` (ref) | `0xf1cf0e81048df168ebeb1b8e47e04e0950f4aa6e8e15fafda7f6b2d5073b52e5` | Turbos |
+| 14 | `Pool<SUI, USDC>` (mut) | `0x15dbcac854b1fc68fcdd2e0085e84f6c4b9acca06c9644af4c47f11f17f55bec` | Bluefin |
+| 15 | `GlobalConfig` (ref) | `0x03db251ba509a8d5d8777b6338836082335d93eecbdd09a11e190a1cff51c352` | Bluefin |
+| 16 | `Clock` (ref) | `0x0000000000000000000000000000000000000000000000000000000000000006` | Sui |
+| 17-21 | `u64, u64, u8, u64, u64` | Pure values (943201, 1060, 1, 1770719081396643311, 1770719091396) | -- |
+
+**DEX package IDs** referenced by this transaction:
+
+| DEX | Package ID |
+|-----|-----------|
+| Stonker | `0xe3b9bd64ba2fb3256293c3fc0119994ec6fc7c96541680959de4d7052be65973` |
+| Deepbook v3 | `0x2c8d603bc51326b8c13cef9dd07031a408a48dddb541963357661df5d3204809` |
+| Cetus CLMM | `0x1eabed72c53feb3805120a081dc15963c204dc8d091542592abaf7a35689b2fb` |
+| Turbos | `0x91bfbc386a41afcfd9b2533058d7e915a1d3829089cc268ff4333d54d6339ca1` |
+| Bluefin | `0x3492c874c1e3b3e2984e8c41b589e642d4d0a5d6459e5a9cfc2d52fd7c89c267` |
+| MMT | `0x70285592c97965e811e0c6f98dccc3a9c2b4ad854b3594faab9597ada267b860` |
 
 **Events emitted:**
 - `stonker::A06a3c5d6cb720767` -- likely a rebalance summary event
 - `a2f7a3f8250aae687::Ab0784991b4b97608` -- from the swap module
 
-**Note:** Initial replay failed with `FAILED_TO_DESERIALIZE_ARGUMENT` due to a [bug in sui-sandbox](https://github.com/Evan-Kim2028/sui-sandbox) where the `GasCoin` argument was not detected when used in `MoveCall` commands. The fix added `MoveCall` to the GasCoin detection logic in `tx_replay.rs`, enabling successful replay of transactions that pass `GasCoin` directly to Move functions.
+#### sui-sandbox GasCoin Bug
+
+Initial replay failed with `FAILED_TO_DESERIALIZE_ARGUMENT` at command 0 (before any execution). Root cause was a bug in [sui-sandbox](https://github.com/Evan-Kim2028/sui-sandbox) `tx_replay.rs` where the `uses_gas_coin` detection only checked `SplitCoins`, `MergeCoins`, and `TransferObjects` commands, but missed `MoveCall`:
+
+```rust
+// BEFORE (buggy): MoveCall falls through to `_ => false`
+let uses_gas_coin = tx.commands.iter().any(|cmd| match cmd {
+    PtbCommand::SplitCoins { coin, .. } => matches!(coin, PtbArgument::GasCoin),
+    PtbCommand::MergeCoins { destination, sources } => { /* checked */ }
+    PtbCommand::TransferObjects { objects, .. } => { /* checked */ }
+    _ => false,  // <-- MoveCall with GasCoin silently returns false
+});
+```
+
+When `uses_gas_coin` is false:
+1. No synthetic gas coin is prepended as Input(0)
+2. `input_offset` stays 0, so `PtbArgument::Input { index: N }` maps to `Argument::Input(N)` with no shift
+3. But `PtbArgument::GasCoin` still maps to `Argument::Input(0)` unconditionally
+4. So arg2 (`&mut Coin<SUI>`) receives Input(0) bytes = the Stonker state object (`Aeddd137dc4eebbc7`)
+5. The VM tries to BCS-deserialize a Stonker state struct as `Coin<SUI>` → `FAILED_TO_DESERIALIZE_ARGUMENT`
+
+The fix ([commit f0a8908](https://github.com/Evan-Kim2028/sui-sandbox/commit/f0a8908)) adds `MoveCall` to the detection. This bug affected any transaction that passes `GasCoin` directly as a Move function argument -- a valid pattern in Sui where the gas coin doubles as a spendable `Coin<SUI>`.
 
 ## Entry Point Function Classification
 

@@ -4,6 +4,59 @@ Package: `0xe3b9bd64ba2fb3256293c3fc0119994ec6fc7c96541680959de4d7052be65973`
 
 On-chain state decoded using [sui-sandbox](https://github.com/Evan-Kim2028/sui-sandbox) and Sui JSON-RPC. Data snapshot taken 2026-02-11.
 
+## Transaction Replay
+
+Successfully replayed Stonker transactions locally using `sui-sandbox replay --compare`:
+
+### Order Cancellation (5 inputs, 10 mutated objects)
+
+```
+$ sui-sandbox replay 7kMBy9LW6NshWEGi6TvAjeMUu1mc9TugY93RmRRbwf2r --compare --verbose
+
+Transaction Replay: 7kMBy9LW6NshWEGi6TvAjeMUu1mc9TugY93RmRRbwf2r
+  Status:  match (local: success, on-chain: success)
+  Created: match
+  Mutated: match (10 objects)
+  Deleted: match
+```
+
+This transaction calls `config::a5ada7d72000d7a1d` with the config object, BalanceManager, Deepbook SUI/USDC pool, a bool flag, and Clock. It cancels 4 outstanding Deepbook orders:
+
+| Event | Type | Quantity | Client Order ID |
+|-------|------|----------|-----------------|
+| `OrderCanceled` | sell | 25,620 SUI | 3 |
+| `OrderCanceled` | buy | 14,300 SUI | 2 |
+| `OrderCanceled` | buy | 858.7 SUI | 0 |
+| `OrderCanceled` | sell | 777.4 SUI | 1 |
+
+Mutated objects include the BalanceManager, config, two Deepbook `Order` objects, and several `Coin<SUI>` and `Coin<USDC>` balances.
+
+### Withdraw (2 inputs)
+
+```
+$ sui-sandbox replay 25jzFPvYbDS83dXWvueY7yHriwTWCxKUyQNQ1R3PdTBp --compare
+
+  Status:  match (local: success, on-chain: success)
+  Created: match | Mutated: match | Deleted: match
+```
+
+Calls `stonker::ad14aae8a195de967(BalanceManager, 92553651)` -- withdraws ~0.093 SUI from the balance manager.
+
+### Config Update (2 inputs)
+
+```
+$ sui-sandbox replay DsgegauRVGMvVxEMeySoRceJTSGZa15F63pFxHMA2Hzr --compare
+
+  Status:  match (local: success, on-chain: success)
+  Created: match | Mutated: match | Deleted: match
+```
+
+Calls `config::aede7ad9675ac505d(shared_config, 800000)` -- updates a u64 config parameter.
+
+### Full Rebalance (21 inputs) -- Not Yet Replayable
+
+The `stonker::aaf6cc9d45ba0185f` function (full multi-DEX rebalance touching Deepbook, Cetus x2, Turbos, Bluefin, MMT) fails with `FAILED_TO_DESERIALIZE_ARGUMENT` during local replay. This is likely caused by a package version mismatch in one of the DEX dependency pools. The function takes 14 shared objects across 6 protocols -- the most complex entry point in the package.
+
 ## Entry Point Function Classification
 
 All 21 public functions in the `stonker` (main) module classified by parameter types:

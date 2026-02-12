@@ -53,9 +53,48 @@ $ sui-sandbox replay DsgegauRVGMvVxEMeySoRceJTSGZa15F63pFxHMA2Hzr --compare
 
 Calls `config::aede7ad9675ac505d(shared_config, 800000)` -- updates a u64 config parameter.
 
-### Full Rebalance (21 inputs) -- Not Yet Replayable
+### Full Rebalance (21 inputs, 12 mutated objects, 2 events)
 
-The `stonker::aaf6cc9d45ba0185f` function (full multi-DEX rebalance touching Deepbook, Cetus x2, Turbos, Bluefin, MMT) fails with `FAILED_TO_DESERIALIZE_ARGUMENT` during local replay. This is likely caused by a package version mismatch in one of the DEX dependency pools. The function takes 14 shared objects across 6 protocols -- the most complex entry point in the package.
+```
+$ sui-sandbox replay HXAygNqYf7AP1JgtTXT4SmJAJ8Q6vG5TWjb6aBgkfgGY --compare --verbose
+
+Transaction Replay: HXAygNqYf7AP1JgtTXT4SmJAJ8Q6vG5TWjb6aBgkfgGY
+  Status:  match (local: success, on-chain: success)
+  Created: match
+  Mutated: match (12 objects)
+  Deleted: match
+```
+
+This is the core market-making function `stonker::aaf6cc9d45ba0185f` -- a full multi-DEX rebalance touching Deepbook, Cetus x2, Turbos, Bluefin, and MMT simultaneously. It takes 14 shared objects across 6 protocols plus the GasCoin as a mutable `Coin<SUI>` input.
+
+**Input mapping** (22 args including GasCoin and TxContext):
+
+| Arg | Type | Object | DEX |
+|-----|------|--------|-----|
+| 0 | `stonker::State` (mut) | `0x6578...` | Stonker |
+| 1 | `config::Config` (ref) | `0x692f...` | Stonker |
+| 2 | `Coin<SUI>` (mut) | GasCoin | -- |
+| 3 | `BalanceManager` (mut) | `0x705a...` | Deepbook |
+| 4 | `Pool<SUI,USDC>` (mut) | `0xe05d...` | Deepbook |
+| 5 | `Pool<DEEP,USDC>` (mut) | `0xf948...` | Deepbook |
+| 6 | `Pool<SUI,USDC>` (mut) | `0x455c...` | MMT |
+| 7 | `Version` (ref) | `0x2375...` | MMT |
+| 8 | `Pool<USDC,SUI>` (mut) | `0x51e8...` | Cetus A |
+| 9 | `Pool<USDC,SUI>` (mut) | `0xb8d7...` | Cetus B |
+| 10 | `GlobalConfig` (ref) | `0xdaa4...` | Cetus |
+| 11 | `RewarderGlobalVault` (mut) | `0xce7b...` | Cetus |
+| 12 | `Pool<SUI,USDC,FEE500BPS>` (mut) | `0x0df4...` | Turbos |
+| 13 | `Versioned` (ref) | `0xf1cf...` | Turbos |
+| 14 | `Pool<SUI,USDC>` (mut) | `0x15db...` | Bluefin |
+| 15 | `GlobalConfig` (ref) | `0x03db...` | Bluefin |
+| 16 | `Clock` (ref) | `0x6` | Sui |
+| 17-21 | `u64, u64, u8, u64, u64` | Pure values | -- |
+
+**Events emitted:**
+- `stonker::A06a3c5d6cb720767` -- likely a rebalance summary event
+- `a2f7a3f8250aae687::Ab0784991b4b97608` -- from the swap module
+
+**Note:** Initial replay failed with `FAILED_TO_DESERIALIZE_ARGUMENT` due to a [bug in sui-sandbox](https://github.com/Evan-Kim2028/sui-sandbox) where the `GasCoin` argument was not detected when used in `MoveCall` commands. The fix added `MoveCall` to the GasCoin detection logic in `tx_replay.rs`, enabling successful replay of transactions that pass `GasCoin` directly to Move functions.
 
 ## Entry Point Function Classification
 
